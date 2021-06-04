@@ -1,0 +1,72 @@
+# Calculate Green Light Timming of a Traffic System.
+
+#Calculate road space
+
+def avg(a,b):
+    s=0
+    for i in range(4):
+        if(i!=b):
+            s+=Road_cap[a][i]
+    return(s/3)
+
+#Handling emergency vechiles
+
+def emg(i,j):
+    if(Emg_vech[i][j]==1):
+            traffic_light_time[j]+=10
+            if(j!=0):
+                traffic_light_time[0]-=5
+            if(j!=1):
+                traffic_light_time[1]-=5
+            if(j!=2):
+                traffic_light_time[2]-=5
+            if(j!=3):
+                traffic_light_time[3]-=5
+
+# Display Green Light timming
+
+def result(i):
+    print("\n\n\nTestcase: ",i+1)
+    print("\n# Timming of green light for roads A,B,C,D. ")
+    print("\n                       A   B   C   D")
+    print("\nRoad capacity     : ",Road_cap[i])
+    print("\nRoad traffic      : ",Road_traffic[i])
+    print("\nEmergency vechile : ",Emg_vech[i])
+    print("\nGreen Light timing: ",traffic_light_time)
+    print("\n*Timing display here is in seconds")
+        
+
+# Calculate time
+
+def calculate():
+    for i in range(len(Road_cap)):
+        avg_sp=0
+        for j in range(4):
+            avg_sp=avg(i,j)
+            traffic_light_time[j]=(Road_traffic[i][j]/avg_sp)*60 + 10   
+            traffic_light_time[j]=round(traffic_light_time[j])
+            emg(i,j)
+        result(i)
+
+   
+
+#Random initialization
+
+#let consider 4 roads A,B,C,D respectively.
+
+
+import random
+Road_cap=[]                         #road capacity [[A,B,C,D],[A,B,C,D]] of respective roads A,B,C,D.
+Road_traffic=[]                     # traffic on respective road A,B,C,D
+Emg_vech=[]                         # 0=no emergency vechile ; 1= emergency vechile on respective roads A,B,C,D.
+traffic_light_time=[10,10,10,10]    # inilize 10 sec each.
+for i in range(8):
+    Road_cap.append([])
+    Road_traffic.append([])
+    Emg_vech.append([])
+    for j in range(4):
+        Road_cap[i].append(random.randint(1,100))
+        Road_traffic[i].append(random.randint(0,100))
+        Emg_vech[i].append(random.randint(0,1))
+
+calculate()
